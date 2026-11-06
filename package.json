@@ -21,10 +21,18 @@
       }
     ],
     "commands": [
-      {
-        "command": "rangeguard.check",
-        "title": "RangeGuard: Проверить диапазоны"
-      }
-    ]
+  {
+    "command": "rangeguard.check",
+    "title": "RangeGuard: Проверить диапазоны"
+  },
+  {
+    "command": "rangeguard.checkValue",
+    "title": "RangeGuard: Проверить значение"
+  },
+  {
+    "command": "rangeguard.exportReport",
+    "title": "RangeGuard: Экспортировать отчёт"
+  }
+]
   }
 }
