@@ -1,0 +1,30 @@
+{
+  "name": "rangeguard",
+  "displayName": "RangeGuard",
+  "description": "Проверка числовых диапазонов: пропуски, пересечения и ошибки границ.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Linters"],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onLanguage:ranges",
+    "onCommand:rangeguard.check"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "ranges",
+        "aliases": ["RangeGuard"],
+        "extensions": [".ranges"]
+      }
+    ],
+    "commands": [
+      {
+        "command": "rangeguard.check",
+        "title": "RangeGuard: Проверить диапазоны"
+      }
+    ]
+  }
+}
