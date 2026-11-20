@@ -5,21 +5,12 @@ const {
     validNumber
 } = require('./analyzer');
 
-/**
- * Подключает команды и автоматическую проверку документов.
- * @param {vscode.ExtensionContext} context — контекст расширения.
- */
 function activate(context) {
     const diagnostics =
         vscode.languages.createDiagnosticCollection('rangeguard');
 
     context.subscriptions.push(diagnostics);
 
-    /**
-     * Проверяет документ и обновляет сообщения в редакторе.
-     * @param {vscode.TextDocument} document — проверяемый документ.
-     * @returns {object|null} Результат анализа или null для другого языка.
-     */
     function checkDocument(document) {
         if (document.languageId !== 'ranges') {
             return null;
@@ -81,7 +72,6 @@ function activate(context) {
                 }
             });
 
-            // Escape закрывает окно без выполнения проверки.
             if (input === undefined) {
                 return;
             }
@@ -152,11 +142,6 @@ function activate(context) {
             const document = editor.document;
             const result = checkDocument(document);
 
-            /**
-             * Экранирует текст для безопасного отображения в Markdown.
-             * @param {string} text — исходный текст.
-             * @returns {string} Текст с экранированными спецсимволами.
-             */
             function escapeMarkdown(text) {
                 return String(text)
                     .replace(/&/g, '&amp;')
@@ -301,7 +286,6 @@ function activate(context) {
         })
     );
 
-    // Проверяем документы, которые открыты до активации расширения.
     for (const document of vscode.workspace.textDocuments) {
         checkDocument(document);
     }

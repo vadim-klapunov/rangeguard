@@ -1,10 +1,5 @@
 const LIMIT = 1_000_000_000;
 
-/**
- * Разбирает документ и проверяет диапазоны.
- * @param {string} text — содержимое файла .ranges.
- * @returns {object} Область, правила и найденные проблемы.
- */
 function analyze(text) {
     const lines = text.split(/\r?\n/);
     const rules = [];
@@ -16,12 +11,6 @@ function analyze(text) {
     let contentCount = 0;
     let invalid = false;
 
-    /**
-     * Добавляет проблему в результат проверки.
-     * @param {number} line — номер строки, начиная с нуля.
-     * @param {string} message — описание проблемы.
-     * @param {boolean} blocking — запрещает дальнейший анализ покрытия.
-     */
     function report(line, message, blocking = true) {
         issues.push({ line, message });
         if (blocking) {
@@ -111,7 +100,6 @@ function analyze(text) {
             continue;
         }
 
-        // Превращаем открытые границы в включённые для целых чисел.
         const min = left + (match[2] === '(' ? 1 : 0);
         const max = right - (match[5] === ')' ? 1 : 0);
 
@@ -135,7 +123,6 @@ function analyze(text) {
         return { domain, rules, issues, valid: false };
     }
 
-    // Проверяем выход за область и обрезаем диапазоны для анализа покрытия.
     const clipped = [];
 
     for (const rule of rules) {
@@ -159,7 +146,6 @@ function analyze(text) {
         first.min - second.min || first.max - second.max
     );
 
-    // Ищем пересечения всех пар правил.
     for (let i = 0; i < clipped.length; i++) {
         for (let j = i + 1; j < clipped.length; j++) {
             const first = clipped[i];
@@ -179,7 +165,6 @@ function analyze(text) {
         }
     }
 
-    // next — первое целое число, ещё не покрытое просмотренными правилами.
     let next = domain.min;
 
     for (const rule of clipped) {
@@ -205,31 +190,14 @@ function analyze(text) {
     return { domain, rules, issues, valid: true };
 }
 
-/**
- * Проверяет допустимость числа.
- * @param {number} value — проверяемое число.
- * @returns {boolean} Соответствует ли число ограничениям.
- */
 function validNumber(value) {
     return Number.isSafeInteger(value) && Math.abs(value) <= LIMIT;
 }
 
-/**
- * Формирует описание участка с включёнными границами.
- * @param {number} min — минимальное значение.
- * @param {number} max — максимальное значение.
- * @returns {string} Одно число или диапазон.
- */
 function segment(min, max) {
     return min === max ? String(min) : `[${min}, ${max}]`;
 }
 
-/**
- * Находит правила для числа в пределах общей области.
- * @param {object} result — результат функции analyze.
- * @param {number} value — проверяемое целое число.
- * @returns {Array} Массив подходящих правил.
- */
 function findMatchingRules(result, value) {
     if (
         !result.valid ||
