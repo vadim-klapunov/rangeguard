@@ -181,3 +181,4 @@ domain: 0..10000
 
 - [Техническое задание](docs/specification.md)
 - [Архитектура](docs/architecture.md)
+- [Справочник функций](docs/functions.md)
